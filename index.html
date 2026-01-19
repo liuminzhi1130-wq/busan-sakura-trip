@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kuromi Busan V3.1 🌸</title>
+    <title>Kuromi Busan V3.2 🌸</title>
     <style>
-        /* --- V3.1 THEME: 亮色庫洛米風格 --- */
+        /* --- V3.2 THEME: 亮色庫洛米風格 --- */
         :root {
-            --bg-color: #f3e6ff; /* 淺薰衣草紫 */
-            --card-bg: #ffffff;  /* 卡片白底 */
-            --primary-pink: #ea00ff; /* 亮粉紅 */
-            --kuromi-purple: #6a00ba; /* 深紫字體 */
+            --bg-color: #f3e6ff;
+            --card-bg: #ffffff;
+            --primary-pink: #ea00ff;
+            --kuromi-purple: #6a00ba;
             --text-color: #2d0042; 
             --border-color: #dcb0ff;
         }
@@ -26,7 +26,6 @@
             font-size: 18px; 
         }
 
-        /* 🌸 背景裝飾：改用 CSS 繪製櫻花點點 (保證不破圖) */
         .bg-pattern {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -39,159 +38,93 @@
             opacity: 0.4;
         }
 
-        /* 😈 右下角庫洛米 (使用 Icon 替代，確保穩定) */
+        /* 庫洛米貼紙 */
         .kuromi-sticker {
             position: fixed;
-            bottom: 10px;
-            right: 10px;
-            width: 100px;
-            height: 100px;
+            bottom: 10px; right: 10px;
+            width: 100px; height: 100px;
             z-index: 10;
             pointer-events: none;
-            /* 這裡換成一個穩定的紫色小惡魔圖示 */
+            /* 這裡換成一個穩定的圖示 */
             background-image: url('https://cdn-icons-png.flaticon.com/512/1000/1000997.png'); 
-            background-size: contain;
-            background-repeat: no-repeat;
+            background-size: contain; background-repeat: no-repeat;
             opacity: 0.9;
             filter: drop-shadow(0 4px 6px rgba(106, 0, 186, 0.4));
         }
 
-        /* --- App 容器 --- */
         .app-container {
-            max-width: 600px; 
-            margin: 0 auto;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
+            max-width: 600px; margin: 0 auto; height: 100vh;
+            display: flex; flex-direction: column;
             background: rgba(255, 255, 255, 0.7); 
             box-shadow: 0 0 20px rgba(106, 0, 186, 0.15);
-            backdrop-filter: blur(5px); /* 磨砂玻璃效果 */
+            backdrop-filter: blur(5px);
         }
 
-        /* --- Header --- */
         .header {
-            padding: 20px 15px;
-            text-align: center;
+            padding: 20px 15px; text-align: center;
             background: linear-gradient(135deg, #e0c3fc 0%, #cbb4ff 100%);
-            border-bottom: 3px solid #fff;
-            flex-shrink: 0;
+            border-bottom: 3px solid #fff; flex-shrink: 0;
         }
-        .header h1 { 
-            margin: 0; 
-            font-size: 28px; 
-            color: #fff; 
-            text-shadow: 2px 2px 0px var(--kuromi-purple);
-            letter-spacing: 1px;
-        }
-        .header p { 
-            margin: 8px 0 0; 
-            font-size: 16px; 
-            color: var(--kuromi-purple); 
-            font-weight: bold;
-        }
+        .header h1 { margin: 0; font-size: 28px; color: #fff; text-shadow: 2px 2px 0px var(--kuromi-purple); }
+        .header p { margin: 8px 0 0; font-size: 16px; color: var(--kuromi-purple); font-weight: bold; }
 
-        /* --- Tabs --- */
         .tabs {
-            display: flex;
-            overflow-x: auto;
-            padding: 15px 10px;
-            background: #ffffff;
-            scrollbar-width: none;
-            flex-shrink: 0;
+            display: flex; overflow-x: auto; padding: 15px 10px;
+            background: #ffffff; scrollbar-width: none; flex-shrink: 0;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
         .tabs::-webkit-scrollbar { display: none; }
         
         .tab-btn {
-            background: #f8f0ff;
-            border: 2px solid var(--border-color);
-            color: var(--kuromi-purple);
-            padding: 10px 20px; 
-            margin: 0 6px;
-            border-radius: 25px;
-            white-space: nowrap;
-            font-size: 16px; 
-            font-weight: bold;
+            background: #f8f0ff; border: 2px solid var(--border-color);
+            color: var(--kuromi-purple); padding: 10px 20px; margin: 0 6px;
+            border-radius: 25px; white-space: nowrap; font-size: 16px; font-weight: bold;
             transition: 0.2s;
         }
         .tab-btn.active {
-            background: var(--kuromi-purple);
-            color: #fff;
-            border-color: var(--kuromi-purple);
-            transform: scale(1.05);
+            background: var(--kuromi-purple); color: #fff;
+            border-color: var(--kuromi-purple); transform: scale(1.05);
             box-shadow: 0 4px 10px rgba(106, 0, 186, 0.3);
         }
 
-        /* --- 列表區域 --- */
-        .content-area {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
+        .content-area { flex: 1; overflow-y: auto; padding: 20px; }
         .day-list { display: none; animation: fadeIn 0.4s; padding-bottom: 100px; }
         .day-list.active { display: block; }
 
-        /* --- 行程卡片 --- */
         .trip-card {
-            display: flex;
-            align-items: center;
-            background: var(--card-bg);
-            margin-bottom: 16px;
-            padding: 18px; 
-            border-radius: 16px;
+            display: flex; align-items: center; background: var(--card-bg);
+            margin-bottom: 16px; padding: 18px; border-radius: 16px;
             border: 2px solid var(--border-color);
-            box-shadow: 0 4px 0 rgba(220, 176, 255, 0.5); 
-            cursor: pointer;
-            transition: 0.2s;
+            box-shadow: 0 4px 0 rgba(220, 176, 255, 0.5); cursor: pointer; transition: 0.2s;
         }
         .trip-card:active { transform: translateY(4px); box-shadow: none; }
 
         .card-time {
-            font-size: 18px; 
-            font-weight: 800;
-            color: var(--primary-pink);
-            width: 60px;
-            flex-shrink: 0;
-            text-align: center;
+            font-size: 18px; font-weight: 800; color: var(--primary-pink);
+            width: 60px; flex-shrink: 0; text-align: center;
         }
         .card-info { flex: 1; padding-left: 15px; border-left: 2px dashed #eee; }
         .card-title { font-size: 20px; font-weight: bold; margin-bottom: 6px; color: #333; }
         .card-sub { font-size: 15px; color: #666; }
         .card-arrow { color: var(--border-color); font-size: 24px; font-weight: bold; }
 
-        /* --- 檢查清單樣式 --- */
+        /* Checklist */
         .check-item {
-            display: flex;
-            align-items: center;
-            background: #fff;
-            margin-bottom: 12px;
-            padding: 15px;
-            border-radius: 12px;
+            display: flex; align-items: center; background: #fff;
+            margin-bottom: 12px; padding: 15px; border-radius: 12px;
             border: 2px solid var(--border-color);
         }
         .check-box {
-            width: 28px; height: 28px;
-            border: 2px solid var(--kuromi-purple);
-            border-radius: 6px;
-            margin-right: 15px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
-            transition: 0.2s;
+            width: 28px; height: 28px; border: 2px solid var(--kuromi-purple);
+            border-radius: 6px; margin-right: 15px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
         }
-        .check-item.checked .check-box {
-            background: var(--kuromi-purple);
-        }
-        .check-item.checked .check-box::after {
-            content: '😈'; 
-            color: white; font-size: 18px;
-        }
-        .check-item.checked .check-text {
-            text-decoration: line-through;
-            color: #aaa;
-        }
+        .check-item.checked .check-box { background: var(--kuromi-purple); }
+        .check-item.checked .check-box::after { content: '😈'; color: white; font-size: 18px; }
+        .check-item.checked .check-text { text-decoration: line-through; color: #aaa; }
         .check-text { font-size: 19px; font-weight: bold; color: #444; }
 
-        /* --- 彈窗 (Modal) --- */
+        /* Modal */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(45, 0, 66, 0.6); z-index: 999;
@@ -200,51 +133,25 @@
         .modal-overlay.open { display: flex; animation: slideUp 0.3s forwards; }
 
         .modal-content {
-            background: #fff; width: 100%; max-width: 600px;
-            height: 85vh;
-            border-radius: 25px 25px 0 0;
-            padding: 25px; box-sizing: border-box;
-            overflow-y: auto;
+            background: #fff; width: 100%; max-width: 600px; height: 85vh;
+            border-radius: 25px 25px 0 0; padding: 25px; box-sizing: border-box; overflow-y: auto;
         }
 
         .detail-img {
             width: 100%; height: 250px; object-fit: cover;
             border-radius: 15px; margin-bottom: 20px;
-            background-color: #f0f0f0;
-            /* 預設載入動畫背景 */
-            background-image: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
+            background-color: #f0f0f0; border: 1px solid #ddd;
         }
-        @keyframes loading { from { background-position: 200% 0; } to { background-position: -200% 0; } }
-
         .detail-title { font-size: 26px; color: var(--kuromi-purple); margin-bottom: 15px; font-weight: bold; }
-        
-        .detail-section { 
-            margin-bottom: 25px; 
-            background: #f9f4ff; 
-            padding: 20px; 
-            border-radius: 15px; 
-            border: 1px solid #eee;
-        }
-        .section-header { 
-            display: flex; align-items: center; 
-            color: var(--primary-pink); 
-            margin-bottom: 10px; 
-            font-weight: bold; font-size: 18px;
-        }
+        .detail-section { margin-bottom: 25px; background: #f9f4ff; padding: 20px; border-radius: 15px; border: 1px solid #eee; }
+        .section-header { display: flex; align-items: center; color: var(--primary-pink); margin-bottom: 10px; font-weight: bold; font-size: 18px; }
         .detail-text { font-size: 17px; line-height: 1.8; color: #444; white-space: pre-line; }
 
         .close-btn {
-            position: absolute; top: 20px; right: 20px;
-            background: #fff; color: #333;
-            width: 40px; height: 40px; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 24px; cursor: pointer; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 1001;
+            position: absolute; top: 20px; right: 20px; background: #fff; color: #333;
+            width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-size: 24px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 1001;
         }
-
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -257,7 +164,7 @@
 
     <div class="app-container">
         <header class="header">
-            <h1>釜山櫻花行 V3.1</h1>
+            <h1>釜山櫻花行 V3.2</h1>
             <p>🌸 Kuromi's Travel Plan 😈</p>
         </header>
 
@@ -270,7 +177,7 @@
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="close-btn" onclick="closeDetailForce()">✕</div>
             
-            <img id="m-img" src="" class="detail-img" alt="景點照片" onerror="this.src='https://images.unsplash.com/photo-1526481280693-3bfa13689368?q=80&w=800'">
+            <img id="m-img" src="" class="detail-img" alt="景點照片" onerror="this.src='https://placehold.co/600x400/e0c3fc/ffffff?text=No+Image'">
             
             <div id="m-title" class="detail-title">標題</div>
 
@@ -289,7 +196,8 @@
     </div>
 
     <script>
-        // 🌸🌸🌸 資料庫 (已更新為穩定圖片連結) 🌸🌸🌸
+        // 🌸🌸🌸 資料庫 (已改為讀取你的 GitHub 本地圖片) 🌸🌸🌸
+        // ⚠️ 請確保上傳的圖片檔名與下方完全一致 (區分大小寫)
         const appData = {
             "🧳 清單": [
                 { type: "check", title: "護照 (效期6個月以上)" },
@@ -310,7 +218,7 @@
                     time: "14:40",
                     title: "✈️ 長榮 BR164 起飛",
                     sub: "桃園機場第二航廈",
-                    img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800", /* 飛機 */
+                    img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800", // 飛機照用 Unsplash 比較美
                     traffic: "自行前往桃園機場。\nBR164 14:40 起飛。",
                     tips: "1. 提早2.5小時到機場。\n2. 行動電源隨身帶。"
                 },
@@ -318,7 +226,7 @@
                     time: "18:00",
                     title: "🛬 抵達金海機場",
                     sub: "入境 & 領行李",
-                    img: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=800", /* 機場/行李 */
+                    img: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=800",
                     traffic: "跟著人群走 -> 入境審查 -> 領行李。",
                     tips: "入境後記得先去換錢或確認 WOWPASS。"
                 },
@@ -326,7 +234,7 @@
                     time: "19:00",
                     title: "🚇 機場 -> 西面飯店",
                     sub: "輕軌 + 地鐵",
-                    img: "https://images.unsplash.com/photo-1549646875-0d2b7d41f71a?q=80&w=800", /* 地鐵 */
+                    img: "0407_traffic.jpg",  // 🔴 你的上傳圖片
                     traffic: "1. 輕軌(紫線) 至「沙上站」。\n2. 轉地鐵2號線(綠線) 至「西面站」。\n3. 7號出口 (找電梯)。",
                     tips: "Denbasta Hotel Central Check-in。"
                 },
@@ -334,7 +242,7 @@
                     time: "20:30",
                     title: "🍱 晚餐：西面市場",
                     sub: "在地美食",
-                    img: "https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?q=80&w=800", /* 韓國市場食物 */
+                    img: "https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?q=80&w=800",
                     traffic: "飯店步行即可。",
                     tips: "推薦：刀切麵、豬肉湯飯。"
                 },
@@ -342,7 +250,7 @@
                     time: "22:00",
                     title: "🍗 宵夜：橋村炸雞",
                     sub: "飯店代訂",
-                    img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800", /* 炸雞 */
+                    img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800",
                     traffic: "請櫃檯幫忙叫外送。",
                     tips: "推薦：蜂蜜口味 (Honey Original)。"
                 }
@@ -352,7 +260,7 @@
                     time: "09:00",
                     title: "🏨 移動到海雲台",
                     sub: "地鐵直達",
-                    img: "https://images.unsplash.com/photo-1569970034604-0c58a5287f32?q=80&w=800", /* 韓國街道 */
+                    img: "0408_subway.jpg", // 🔴 你的上傳圖片
                     traffic: "西面站 -> 海雲台站 (免轉車)。\n3號出口走7分鐘。",
                     tips: "先去飯店寄放行李。"
                 },
@@ -360,7 +268,7 @@
                     time: "11:00",
                     title: "🍱 午餐：尾浦家",
                     sub: "海鮮醃漬定食",
-                    img: "https://images.unsplash.com/photo-1559314809-0d155014e29e?q=80&w=800", /* 海鮮 */
+                    img: "https://images.unsplash.com/photo-1559314809-0d155014e29e?q=80&w=800",
                     traffic: "中洞站步行或計程車。",
                     tips: "這家超紅，建議提早去排隊。"
                 },
@@ -368,7 +276,7 @@
                     time: "15:00",
                     title: "🚋 天空膠囊列車",
                     sub: "尾浦 -> 清沙浦",
-                    img: "https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?q=80&w=800", /* 列車相關 */
+                    img: "https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?q=80&w=800",
                     traffic: "尾浦站上車。\n時間：15:00 - 16:00 (絕對不能遲到)。",
                     tips: "手機電量充滿，這段路超美！"
                 },
@@ -376,7 +284,7 @@
                     time: "16:30",
                     title: "🌊 清沙浦天空步道",
                     sub: "透明地板",
-                    img: "https://images.unsplash.com/photo-1495954484750-af469f2f9be5?q=80&w=800", /* 海邊步道 */
+                    img: "https://images.unsplash.com/photo-1495954484750-af469f2f9be5?q=80&w=800",
                     traffic: "下車後步行。",
                     tips: "回程搭海岸列車 (Beach Train) 回尾浦。"
                 },
@@ -384,7 +292,7 @@
                     time: "20:00",
                     title: "🛍️ 海雲台大創 & 夜市",
                     sub: "逛街行程",
-                    img: "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=800", /* 夜市 */
+                    img: "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=800",
                     traffic: "海雲台站前。",
                     tips: "宵夜：海鮮蔥餅。"
                 }
@@ -394,7 +302,7 @@
                     time: "09:00",
                     title: "🍱 早餐：大海鮑魚粥",
                     sub: "必吃粥品",
-                    img: "https://images.unsplash.com/photo-1563865436874-9aef32095fad?q=80&w=800", /* 粥/湯 */
+                    img: "https://images.unsplash.com/photo-1563865436874-9aef32095fad?q=80&w=800",
                     traffic: "海雲台區。",
                     tips: "吃完去逛一下三津魚餅。"
                 },
@@ -402,7 +310,7 @@
                     time: "10:30",
                     title: "🌸 影島東三海水川",
                     sub: "賞櫻秘境",
-                    img: "https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=800", /* 櫻花 */
+                    img: "https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=800",
                     traffic: "建議從南浦洞轉公車。",
                     tips: "這裡櫻花超多，準備好相機！"
                 },
@@ -410,7 +318,7 @@
                     time: "12:30",
                     title: "🍱 午餐：影島海女村",
                     sub: "海邊海鮮",
-                    img: "https://images.unsplash.com/photo-1544551763-46a8723ba3f9?q=80&w=800", /* 海邊/海鮮 */
+                    img: "0409_haenyeo.jpg", // 🔴 你的上傳圖片
                     traffic: "影島海邊。",
                     tips: "坐在海邊吃海膽紫菜包飯。"
                 },
@@ -418,7 +326,7 @@
                     time: "15:00",
                     title: "🏘️ 白淺灘文化村",
                     sub: "網美咖啡廳",
-                    img: "https://images.unsplash.com/photo-1512453979798-5ea904f8486d?q=80&w=800", /* 希臘風/白牆 */
+                    img: "0409_village.jpg", // 🔴 你的上傳圖片
                     traffic: "公車前往。",
                     tips: "去 THRILL ON THE MUG 喝咖啡。"
                 }
@@ -428,7 +336,7 @@
                     time: "09:00",
                     title: "🚠 松島海上纜車",
                     sub: "水晶車廂",
-                    img: "https://images.unsplash.com/photo-1595246140625-573b715d11dc?q=80&w=800", /* 纜車 */
+                    img: "0410_cablecar.jpg", // 🔴 你的上傳圖片 (修正原本錯誤的圖)
                     traffic: "南浦洞搭公車或計程車。",
                     tips: "記得走龍宮空中步道。"
                 },
@@ -436,7 +344,7 @@
                     time: "15:00",
                     title: "🎁 樂天超市 (光復店)",
                     sub: "伴手禮採購",
-                    img: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?q=80&w=800", /* 超市/購物 */
+                    img: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?q=80&w=800",
                     traffic: "南浦站直結。",
                     tips: "準備大袋子，這裡超好買！"
                 },
@@ -444,7 +352,7 @@
                     time: "20:00",
                     title: "✨ 廣安里無人機秀",
                     sub: "MONE SHOW",
-                    img: "https://images.unsplash.com/photo-1469122312224-c5846569af22?q=80&w=800", /* 夜景/燈光 */
+                    img: "0410_drone.jpg", // 🔴 你的上傳圖片
                     traffic: "廣安里海水浴場。",
                     tips: "買 All Sunday 貝果邊吃邊看。"
                 }
@@ -454,7 +362,7 @@
                     time: "09:00",
                     title: "🏘️ 甘川洞文化村",
                     sub: "小王子",
-                    img: "https://images.unsplash.com/photo-1596414086775-3e32157b6f32?q=80&w=800", /* 甘川洞彩色屋 */
+                    img: "0411_gamcheon.jpg", // 🔴 你的上傳圖片
                     traffic: "土城站轉計程車。",
                     tips: "一定要跟小王子背影合照。"
                 },
@@ -462,7 +370,7 @@
                     time: "12:00",
                     title: "🦀 午餐：札嘎其市場",
                     sub: "帝王蟹",
-                    img: "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?q=80&w=800", /* 螃蟹 */
+                    img: "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?q=80&w=800",
                     traffic: "札嘎其站。",
                     tips: "記得殺價！"
                 },
@@ -470,7 +378,7 @@
                     time: "16:30",
                     title: "✈️ 前往機場 (BR163)",
                     sub: "回家囉",
-                    img: "https://images.unsplash.com/photo-1520697926715-e2f47c87023d?q=80&w=800", /* 機場/飛機 */
+                    img: "0411_airport.jpg", // 🔴 你的上傳圖片
                     traffic: "回飯店拿行李 -> 機場。",
                     tips: "BR163 19:19 起飛。"
                 }
@@ -485,24 +393,20 @@
             const tabs = Object.keys(appData);
             
             tabs.forEach((tabName, index) => {
-                // 1. 建立 Tab 按鈕
                 const btn = document.createElement('button');
                 btn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
                 btn.innerText = tabName;
                 btn.onclick = () => switchTab(tabName, btn);
                 tabContainer.appendChild(btn);
 
-                // 2. 建立內容容器
                 const listDiv = document.createElement('div');
                 listDiv.className = `day-list ${index === 0 ? 'active' : ''}`;
                 listDiv.id = `list-${tabName}`;
                 
-                // 3. 判斷是「行程」還是「清單」
                 const items = appData[tabName];
                 
                 items.forEach(item => {
                     if (item.type === 'check') {
-                        // 渲染成檢查清單 (Checkbox)
                         const checkBox = document.createElement('div');
                         checkBox.className = 'check-item';
                         checkBox.onclick = function() {
@@ -514,7 +418,6 @@
                         `;
                         listDiv.appendChild(checkBox);
                     } else {
-                        // 渲染成行程卡片 (Card)
                         const card = document.createElement('div');
                         card.className = 'trip-card';
                         card.onclick = () => openModal(item);
