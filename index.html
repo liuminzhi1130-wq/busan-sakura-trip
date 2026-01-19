@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Kuromi & Hello Kitty Busan Trip 🌸</title>
     <style>
-        /* --- V3.4 THEME: Hello Kitty 櫻花粉嫩風格 --- */
+        /* --- V3.5 THEME: Hello Kitty 櫻花粉嫩風格 --- */
         :root {
             --bg-color: #fff0f5; /* 淺櫻花粉背景 */
             --card-bg: #ffffff;
@@ -26,7 +26,7 @@
             font-size: 18px; 
         }
 
-        /* 🌸 背景裝飾：調整為櫻花粉色調 */
+        /* 🌸 背景裝飾 */
         .bg-pattern {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -36,10 +36,10 @@
                 radial-gradient(#ffc0cb 20%, transparent 20%);
             background-size: 30px 30px;
             background-position: 0 0, 15px 15px;
-            opacity: 0.5; /* 提高一點不透明度讓粉色更明顯 */
+            opacity: 0.5;
         }
 
-        /* 庫洛米貼紙 (保留作為彩蛋) */
+        /* 庫洛米貼紙 */
         .kuromi-sticker {
             position: fixed;
             bottom: 10px; right: 10px;
@@ -55,14 +55,13 @@
         .app-container {
             max-width: 600px; margin: 0 auto; height: 100vh;
             display: flex; flex-direction: column;
-            background: rgba(255, 255, 255, 0.8); /* 提高白底不透明度 */
+            background: rgba(255, 255, 255, 0.8);
             box-shadow: 0 0 20px rgba(255, 182, 193, 0.3);
             backdrop-filter: blur(5px);
         }
 
         .header {
             padding: 20px 15px; text-align: center;
-            /* 漸層改為粉色系 */
             background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
             border-bottom: 3px solid #fff; flex-shrink: 0;
         }
@@ -89,33 +88,28 @@
         }
 
         .content-area { flex: 1; overflow-y: auto; padding: 20px; }
-        /* 減少底部 padding，因為現在有圖片了 */
         .day-list { display: none; animation: fadeIn 0.4s; padding-bottom: 30px; }
         .day-list.active { display: block; }
 
-        /* 🎨 新增：底部插畫樣式 */
+        /* 🎨 底部插畫樣式 */
         .footer-img {
             width: 100%;
             max-width: 550px;
             height: auto;
             display: block;
-            margin: 30px auto 0; /* 上方留白 */
+            margin: 30px auto 0;
             border-radius: 20px;
-            border: 3px solid var(--border-color); /* 粉色邊框 */
+            border: 3px solid var(--border-color);
             box-shadow: 0 6px 15px rgba(255, 182, 193, 0.4);
-            /* 添加一點暖色濾鏡，讓圖片更融入粉色背景 */
             filter: sepia(10%) hue-rotate(320deg) brightness(1.02) contrast(0.95);
             transition: transform 0.3s ease;
         }
-        .footer-img:hover {
-            transform: scale(1.02);
-        }
+        .footer-img:hover { transform: scale(1.02); }
 
         .trip-card {
             display: flex; align-items: center; background: var(--card-bg);
             margin-bottom: 16px; padding: 18px; border-radius: 16px;
             border: 2px solid var(--border-color);
-            /* 卡片陰影改為粉色 */
             box-shadow: 0 4px 0 rgba(255, 182, 193, 0.6); cursor: pointer; transition: 0.2s;
         }
         .trip-card:active { transform: translateY(4px); box-shadow: none; }
@@ -141,14 +135,14 @@
             display: flex; align-items: center; justify-content: center; cursor: pointer;
         }
         .check-item.checked .check-box { background: var(--primary-pink); }
-        .check-item.checked .check-box::after { content: '🌸'; color: white; font-size: 18px; } /* 改成櫻花 */
+        .check-item.checked .check-box::after { content: '🌸'; color: white; font-size: 18px; }
         .check-item.checked .check-text { text-decoration: line-through; color: #aaa; }
         .check-text { font-size: 19px; font-weight: bold; color: #444; }
 
         /* Modal */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(90, 0, 40, 0.5); z-index: 999; /* 彈窗背景改深粉色 */
+            background: rgba(90, 0, 40, 0.5); z-index: 999;
             display: none; justify-content: center; align-items: flex-end;
         }
         .modal-overlay.open { display: flex; animation: slideUp 0.3s forwards; }
@@ -187,7 +181,7 @@
 
     <div class="app-container">
         <header class="header">
-            <h1>釜山櫻花行 V3.4</h1>
+            <h1>釜山櫻花行 V3.5</h1>
             <p>🌸 Hello Kitty & Friends Trip 🌸</p>
         </header>
 
@@ -220,15 +214,14 @@
 
     <script>
         // 🌸🌸🌸 資料庫 🌸🌸🌸
-        // ⚠️ 請確保 GitHub 上已經有 0408_capsule.jpg 和 0408_market.jpg 這兩個檔案
         
-        // 🎨 新增：底部插畫對應表
+        // 🎨 更新：對應你剛剛改名並上傳的圖片
         const footerImages = {
-            "4/7": "image_0.png", // 飛機
-            "4/8": "image_4.png", // 膠囊列車
-            "4/9": "image_3.png", // 海女吃飯
-            "4/10": "image_2.png", // 煙火秀
-            "4/11": "image_1.png"  // 甘川洞小王子
+            "4/7": "0407_footer.jpg", // 飛機
+            "4/8": "0408_footer.jpg", // 膠囊列車
+            "4/9": "0409_footer.jpg", // 海女吃飯
+            "4/10": "0410_footer.jpg", // 煙火秀
+            "4/11": "0411_footer.jpg"  // 甘川洞小王子
         };
 
         const appData = {
@@ -267,7 +260,7 @@
                     time: "19:00",
                     title: "🚇 機場 -> 西面飯店",
                     sub: "輕軌 + 地鐵",
-                    img: "0407_traffic.jpg",  // 🔴 你的上傳圖片
+                    img: "0407_traffic.jpg",
                     traffic: "1. 輕軌(紫線) 至「沙上站」。\n2. 轉地鐵2號線(綠線) 至「西面站」。\n3. 7號出口 (找電梯)。",
                     tips: "Denbasta Hotel Central Check-in。"
                 },
@@ -293,7 +286,7 @@
                     time: "09:00",
                     title: "🏨 移動到海雲台",
                     sub: "地鐵直達",
-                    img: "0408_subway.jpg", // 🔴 你的上傳圖片
+                    img: "0408_subway.jpg",
                     traffic: "西面站 -> 海雲台站 (免轉車)。\n3號出口走7分鐘。",
                     tips: "先去飯店寄放行李。"
                 },
@@ -309,7 +302,7 @@
                     time: "15:00",
                     title: "🚋 天空膠囊列車",
                     sub: "尾浦 -> 清沙浦",
-                    img: "0408_capsule.jpg", // 🔴 你的上傳圖片
+                    img: "0408_capsule.jpg",
                     traffic: "尾浦站上車。\n時間：15:00 - 16:00 (絕對不能遲到)。",
                     tips: "手機電量充滿，這段路超美！"
                 },
@@ -325,7 +318,7 @@
                     time: "20:00",
                     title: "🛍️ 海雲台大創 & 夜市",
                     sub: "逛街行程",
-                    img: "0408_market.jpg", // 🔴 你的上傳圖片
+                    img: "0408_market.jpg",
                     traffic: "海雲台站前。",
                     tips: "宵夜：海鮮蔥餅。"
                 }
@@ -351,7 +344,7 @@
                     time: "12:30",
                     title: "🍱 午餐：影島海女村",
                     sub: "海邊海鮮",
-                    img: "0409_haenyeo.jpg", // 🔴 你的上傳圖片
+                    img: "0409_haenyeo.jpg",
                     traffic: "影島海邊。",
                     tips: "坐在海邊吃海膽紫菜包飯。"
                 },
@@ -359,7 +352,7 @@
                     time: "15:00",
                     title: "🏘️ 白淺灘文化村",
                     sub: "網美咖啡廳",
-                    img: "0409_village.jpg", // 🔴 你的上傳圖片
+                    img: "0409_village.jpg",
                     traffic: "公車前往。",
                     tips: "去 THRILL ON THE MUG 喝咖啡。"
                 }
@@ -369,7 +362,7 @@
                     time: "09:00",
                     title: "🚠 松島海上纜車",
                     sub: "水晶車廂",
-                    img: "0410_cablecar.jpg", // 🔴 你的上傳圖片
+                    img: "0410_cablecar.jpg",
                     traffic: "南浦洞搭公車或計程車。",
                     tips: "記得走龍宮空中步道。"
                 },
@@ -385,7 +378,7 @@
                     time: "20:00",
                     title: "✨ 廣安里無人機秀",
                     sub: "MONE SHOW",
-                    img: "0410_drone.jpg", // 🔴 你的上傳圖片
+                    img: "0410_drone.jpg",
                     traffic: "廣安里海水浴場。",
                     tips: "買 All Sunday 貝果邊吃邊看。"
                 }
@@ -395,7 +388,7 @@
                     time: "09:00",
                     title: "🏘️ 甘川洞文化村",
                     sub: "小王子",
-                    img: "0411_gamcheon.jpg", // 🔴 你的上傳圖片
+                    img: "0411_gamcheon.jpg",
                     traffic: "土城站轉計程車。",
                     tips: "一定要跟小王子背影合照。"
                 },
@@ -411,7 +404,7 @@
                     time: "16:30",
                     title: "✈️ 前往機場 (BR163)",
                     sub: "回家囉",
-                    img: "0411_airport.jpg", // 🔴 你的上傳圖片
+                    img: "0411_airport.jpg",
                     traffic: "回飯店拿行李 -> 機場。",
                     tips: "BR163 19:19 起飛。"
                 }
@@ -466,7 +459,7 @@
                     }
                 });
 
-                // 🎨 新增：在行程列表底部插入對應的插畫
+                // 插入底部插畫 (如果有的話)
                 if (footerImages[tabName]) {
                     const footerImg = document.createElement('img');
                     footerImg.src = footerImages[tabName];
