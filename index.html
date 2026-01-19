@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Kuromi & Hello Kitty Busan Trip 🌸</title>
     <style>
-        /* --- V3.5 THEME: Hello Kitty 櫻花粉嫩風格 --- */
+        /* --- V3.6 THEME: Hello Kitty 櫻花粉嫩風格 --- */
         :root {
-            --bg-color: #fff0f5; /* 淺櫻花粉背景 */
+            --bg-color: #fff0f5;
             --card-bg: #ffffff;
-            --primary-pink: #ff69b4; /* Hello Kitty 經典亮粉 */
-            --kuromi-purple: #8a2be2; /* 保留一點庫洛米的紫作為點綴 */
-            --text-color: #5c3a5c; /* 深暖色文字 */
-            --border-color: #ffb6c1; /* 淺粉色邊框 */
+            --primary-pink: #ff69b4;
+            --kuromi-purple: #8a2be2;
+            --text-color: #5c3a5c;
+            --border-color: #ffb6c1;
         }
 
         body, html {
@@ -26,7 +26,7 @@
             font-size: 18px; 
         }
 
-        /* 🌸 背景裝飾 */
+        /* 背景裝飾 */
         .bg-pattern {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -91,7 +91,7 @@
         .day-list { display: none; animation: fadeIn 0.4s; padding-bottom: 30px; }
         .day-list.active { display: block; }
 
-        /* 🎨 底部插畫樣式 */
+        /* 底部插畫樣式 */
         .footer-img {
             width: 100%;
             max-width: 550px;
@@ -181,7 +181,7 @@
 
     <div class="app-container">
         <header class="header">
-            <h1>釜山櫻花行 V3.5</h1>
+            <h1>釜山櫻花行 V3.6</h1>
             <p>🌸 Hello Kitty & Friends Trip 🌸</p>
         </header>
 
@@ -215,13 +215,13 @@
     <script>
         // 🌸🌸🌸 資料庫 🌸🌸🌸
         
-        // 🎨 更新：對應你剛剛改名並上傳的圖片
+        // Hello Kitty 插畫 (之前上傳的)
         const footerImages = {
-            "4/7": "0407_footer.jpg", // 飛機
-            "4/8": "0408_footer.jpg", // 膠囊列車
-            "4/9": "0409_footer.jpg", // 海女吃飯
-            "4/10": "0410_footer.jpg", // 煙火秀
-            "4/11": "0411_footer.jpg"  // 甘川洞小王子
+            "4/7": "0407_footer.jpg",
+            "4/8": "0408_footer.jpg",
+            "4/9": "0409_footer.jpg",
+            "4/10": "0410_footer.jpg",
+            "4/11": "0411_footer.jpg"
         };
 
         const appData = {
@@ -268,7 +268,7 @@
                     time: "20:30",
                     title: "🍱 晚餐：西面市場",
                     sub: "在地美食",
-                    img: "https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?q=80&w=800",
+                    img: "0407_market.jpg", // 🔴 你的新圖片
                     traffic: "飯店步行即可。",
                     tips: "推薦：刀切麵、豬肉湯飯。"
                 },
@@ -276,7 +276,7 @@
                     time: "22:00",
                     title: "🍗 宵夜：橋村炸雞",
                     sub: "飯店代訂",
-                    img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800",
+                    img: "0407_chicken.jpg", // 🔴 你的新圖片
                     traffic: "請櫃檯幫忙叫外送。",
                     tips: "推薦：蜂蜜口味 (Honey Original)。"
                 }
@@ -294,7 +294,7 @@
                     time: "11:00",
                     title: "🍱 午餐：尾浦家",
                     sub: "海鮮醃漬定食",
-                    img: "https://images.unsplash.com/photo-1559314809-0d155014e29e?q=80&w=800",
+                    img: "0408_food.jpg", // 🔴 你的新圖片
                     traffic: "中洞站步行或計程車。",
                     tips: "這家超紅，建議提早去排隊。"
                 },
@@ -310,7 +310,7 @@
                     time: "16:30",
                     title: "🌊 清沙浦天空步道",
                     sub: "透明地板",
-                    img: "https://images.unsplash.com/photo-1495954484750-af469f2f9be5?q=80&w=800",
+                    img: "0408_skywalk.jpg", // 🔴 你的新圖片
                     traffic: "下車後步行。",
                     tips: "回程搭海岸列車 (Beach Train) 回尾浦。"
                 },
@@ -328,7 +328,7 @@
                     time: "09:00",
                     title: "🍱 早餐：大海鮑魚粥",
                     sub: "必吃粥品",
-                    img: "https://images.unsplash.com/photo-1563865436874-9aef32095fad?q=80&w=800",
+                    img: "0409_porridge.jpg", // 🔴 你的新圖片
                     traffic: "海雲台區。",
                     tips: "吃完去逛一下三津魚餅。"
                 },
@@ -370,7 +370,7 @@
                     time: "15:00",
                     title: "🎁 樂天超市 (光復店)",
                     sub: "伴手禮採購",
-                    img: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?q=80&w=800",
+                    img: "0410_lotte.jpg", // 🔴 你的新圖片
                     traffic: "南浦站直結。",
                     tips: "準備大袋子，這裡超好買！"
                 },
@@ -396,7 +396,7 @@
                     time: "12:00",
                     title: "🦀 午餐：札嘎其市場",
                     sub: "帝王蟹",
-                    img: "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?q=80&w=800",
+                    img: "0411_market.jpg", // 🔴 你的新圖片
                     traffic: "札嘎其站。",
                     tips: "記得殺價！"
                 },
@@ -459,7 +459,7 @@
                     }
                 });
 
-                // 插入底部插畫 (如果有的話)
+                // 插入底部插畫
                 if (footerImages[tabName]) {
                     const footerImg = document.createElement('img');
                     footerImg.src = footerImages[tabName];
