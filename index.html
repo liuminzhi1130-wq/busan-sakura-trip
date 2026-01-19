@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Kuromi & Hello Kitty Busan Trip 🌸</title>
     <style>
-        /* --- V3.6 THEME: Hello Kitty 櫻花粉嫩風格 --- */
+        /* --- V3.7 THEME: Hello Kitty 櫻花粉嫩風格 --- */
         :root {
             --bg-color: #fff0f5;
             --card-bg: #ffffff;
@@ -181,7 +181,7 @@
 
     <div class="app-container">
         <header class="header">
-            <h1>釜山櫻花行 V3.6</h1>
+            <h1>釜山櫻花行 V3.7</h1>
             <p>🌸 Hello Kitty & Friends Trip 🌸</p>
         </header>
 
@@ -215,7 +215,7 @@
     <script>
         // 🌸🌸🌸 資料庫 🌸🌸🌸
         
-        // Hello Kitty 插畫 (之前上傳的)
+        // Hello Kitty 插畫
         const footerImages = {
             "4/7": "0407_footer.jpg",
             "4/8": "0408_footer.jpg",
@@ -231,7 +231,8 @@
                 { type: "check", title: "eSIM / 網卡 (已設定?)" },
                 { type: "check", title: "行動電源 (不可託運)" },
                 { type: "check", title: "充電線 (Type-C / Lightning)" },
-                { type: "check", title: "錢包 (韓元 / 信用卡 / 日幣)" },
+                // 👇 這裡修正了：移除了「/ 日幣」
+                { type: "check", title: "錢包 (韓元 / 信用卡)" },
                 { type: "check", title: "AirTag (掛行李箱)" },
                 { type: "check", title: "轉接頭 (兩孔圓形)" },
                 { type: "check", title: "牙刷牙膏 (飯店不提供)" },
@@ -268,7 +269,7 @@
                     time: "20:30",
                     title: "🍱 晚餐：西面市場",
                     sub: "在地美食",
-                    img: "0407_market.jpg", // 🔴 你的新圖片
+                    img: "0407_market.jpg", 
                     traffic: "飯店步行即可。",
                     tips: "推薦：刀切麵、豬肉湯飯。"
                 },
@@ -276,7 +277,7 @@
                     time: "22:00",
                     title: "🍗 宵夜：橋村炸雞",
                     sub: "飯店代訂",
-                    img: "0407_chicken.jpg", // 🔴 你的新圖片
+                    img: "0407_chicken.jpg", 
                     traffic: "請櫃檯幫忙叫外送。",
                     tips: "推薦：蜂蜜口味 (Honey Original)。"
                 }
@@ -294,7 +295,7 @@
                     time: "11:00",
                     title: "🍱 午餐：尾浦家",
                     sub: "海鮮醃漬定食",
-                    img: "0408_food.jpg", // 🔴 你的新圖片
+                    img: "0408_food.jpg", 
                     traffic: "中洞站步行或計程車。",
                     tips: "這家超紅，建議提早去排隊。"
                 },
@@ -310,7 +311,7 @@
                     time: "16:30",
                     title: "🌊 清沙浦天空步道",
                     sub: "透明地板",
-                    img: "0408_skywalk.jpg", // 🔴 你的新圖片
+                    img: "0408_skywalk.jpg", 
                     traffic: "下車後步行。",
                     tips: "回程搭海岸列車 (Beach Train) 回尾浦。"
                 },
@@ -328,7 +329,7 @@
                     time: "09:00",
                     title: "🍱 早餐：大海鮑魚粥",
                     sub: "必吃粥品",
-                    img: "0409_porridge.jpg", // 🔴 你的新圖片
+                    img: "0409_porridge.jpg", 
                     traffic: "海雲台區。",
                     tips: "吃完去逛一下三津魚餅。"
                 },
@@ -370,7 +371,7 @@
                     time: "15:00",
                     title: "🎁 樂天超市 (光復店)",
                     sub: "伴手禮採購",
-                    img: "0410_lotte.jpg", // 🔴 你的新圖片
+                    img: "0410_lotte.jpg", 
                     traffic: "南浦站直結。",
                     tips: "準備大袋子，這裡超好買！"
                 },
@@ -396,7 +397,7 @@
                     time: "12:00",
                     title: "🦀 午餐：札嘎其市場",
                     sub: "帝王蟹",
-                    img: "0411_market.jpg", // 🔴 你的新圖片
+                    img: "0411_market.jpg", 
                     traffic: "札嘎其站。",
                     tips: "記得殺價！"
                 },
@@ -459,7 +460,6 @@
                     }
                 });
 
-                // 插入底部插畫
                 if (footerImages[tabName]) {
                     const footerImg = document.createElement('img');
                     footerImg.src = footerImages[tabName];
