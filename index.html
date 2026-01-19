@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kuromi Busan V3.2 🌸</title>
+    <title>Kuromi Busan V3.3 🌸</title>
     <style>
-        /* --- V3.2 THEME: 亮色庫洛米風格 --- */
+        /* --- V3.3 THEME: 亮色庫洛米風格 --- */
         :root {
             --bg-color: #f3e6ff;
             --card-bg: #ffffff;
@@ -45,7 +45,6 @@
             width: 100px; height: 100px;
             z-index: 10;
             pointer-events: none;
-            /* 這裡換成一個穩定的圖示 */
             background-image: url('https://cdn-icons-png.flaticon.com/512/1000/1000997.png'); 
             background-size: contain; background-repeat: no-repeat;
             opacity: 0.9;
@@ -164,7 +163,7 @@
 
     <div class="app-container">
         <header class="header">
-            <h1>釜山櫻花行 V3.2</h1>
+            <h1>釜山櫻花行 V3.3</h1>
             <p>🌸 Kuromi's Travel Plan 😈</p>
         </header>
 
@@ -196,8 +195,8 @@
     </div>
 
     <script>
-        // 🌸🌸🌸 資料庫 (已改為讀取你的 GitHub 本地圖片) 🌸🌸🌸
-        // ⚠️ 請確保上傳的圖片檔名與下方完全一致 (區分大小寫)
+        // 🌸🌸🌸 資料庫 (已更新 4/8 圖片路徑) 🌸🌸🌸
+        // ⚠️ 請確保 GitHub 上已經有 0408_capsule.jpg 和 0408_market.jpg 這兩個檔案
         const appData = {
             "🧳 清單": [
                 { type: "check", title: "護照 (效期6個月以上)" },
@@ -218,7 +217,7 @@
                     time: "14:40",
                     title: "✈️ 長榮 BR164 起飛",
                     sub: "桃園機場第二航廈",
-                    img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800", // 飛機照用 Unsplash 比較美
+                    img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800",
                     traffic: "自行前往桃園機場。\nBR164 14:40 起飛。",
                     tips: "1. 提早2.5小時到機場。\n2. 行動電源隨身帶。"
                 },
@@ -276,7 +275,9 @@
                     time: "15:00",
                     title: "🚋 天空膠囊列車",
                     sub: "尾浦 -> 清沙浦",
-                    img: "https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?q=80&w=800",
+                    // ▼▼▼▼▼ 修改這裡 ▼▼▼▼▼
+                    img: "0408_capsule.jpg", // 🔴 你的新上傳圖片
+                    // ▲▲▲▲▲ 修改這裡 ▲▲▲▲▲
                     traffic: "尾浦站上車。\n時間：15:00 - 16:00 (絕對不能遲到)。",
                     tips: "手機電量充滿，這段路超美！"
                 },
@@ -292,7 +293,9 @@
                     time: "20:00",
                     title: "🛍️ 海雲台大創 & 夜市",
                     sub: "逛街行程",
-                    img: "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=800",
+                    // ▼▼▼▼▼ 修改這裡 ▼▼▼▼▼
+                    img: "0408_market.jpg", // 🔴 你的新上傳圖片
+                    // ▲▲▲▲▲ 修改這裡 ▲▲▲▲▲
                     traffic: "海雲台站前。",
                     tips: "宵夜：海鮮蔥餅。"
                 }
@@ -336,7 +339,7 @@
                     time: "09:00",
                     title: "🚠 松島海上纜車",
                     sub: "水晶車廂",
-                    img: "0410_cablecar.jpg", // 🔴 你的上傳圖片 (修正原本錯誤的圖)
+                    img: "0410_cablecar.jpg", // 🔴 你的上傳圖片
                     traffic: "南浦洞搭公車或計程車。",
                     tips: "記得走龍宮空中步道。"
                 },
