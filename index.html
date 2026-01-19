@@ -203,4 +203,364 @@
             background: #fff; width: 100%; max-width: 600px;
             height: 85vh;
             border-radius: 25px 25px 0 0;
-            padding: 25px; box-sizing: border-
+            padding: 25px; box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .detail-img {
+            width: 100%; height: 250px; object-fit: cover;
+            border-radius: 15px; margin-bottom: 20px;
+            background-color: #f0f0f0;
+            /* 預設載入動畫背景 */
+            background-image: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+        .detail-title { font-size: 26px; color: var(--kuromi-purple); margin-bottom: 15px; font-weight: bold; }
+        
+        .detail-section { 
+            margin-bottom: 25px; 
+            background: #f9f4ff; 
+            padding: 20px; 
+            border-radius: 15px; 
+            border: 1px solid #eee;
+        }
+        .section-header { 
+            display: flex; align-items: center; 
+            color: var(--primary-pink); 
+            margin-bottom: 10px; 
+            font-weight: bold; font-size: 18px;
+        }
+        .detail-text { font-size: 17px; line-height: 1.8; color: #444; white-space: pre-line; }
+
+        .close-btn {
+            position: absolute; top: 20px; right: 20px;
+            background: #fff; color: #333;
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 24px; cursor: pointer; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1001;
+        }
+
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-pattern"></div>
+    <div class="kuromi-sticker"></div>
+
+    <div class="app-container">
+        <header class="header">
+            <h1>釜山櫻花行 V3.1</h1>
+            <p>🌸 Kuromi's Travel Plan 😈</p>
+        </header>
+
+        <nav class="tabs" id="tabContainer"></nav>
+
+        <main class="content-area" id="listContainer"></main>
+    </div>
+
+    <div class="modal-overlay" id="detailModal" onclick="closeDetail(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="close-btn" onclick="closeDetailForce()">✕</div>
+            
+            <img id="m-img" src="" class="detail-img" alt="景點照片" onerror="this.src='https://images.unsplash.com/photo-1526481280693-3bfa13689368?q=80&w=800'">
+            
+            <div id="m-title" class="detail-title">標題</div>
+
+            <div class="detail-section">
+                <div class="section-header">🚇 交通方式</div>
+                <div id="m-traffic" class="detail-text"></div>
+            </div>
+
+            <div class="detail-section">
+                <div class="section-header">💡 庫洛米小筆記</div>
+                <div id="m-tips" class="detail-text"></div>
+            </div>
+            
+            <div style="height: 50px;"></div>
+        </div>
+    </div>
+
+    <script>
+        // 🌸🌸🌸 資料庫 (已更新為穩定圖片連結) 🌸🌸🌸
+        const appData = {
+            "🧳 清單": [
+                { type: "check", title: "護照 (效期6個月以上)" },
+                { type: "check", title: "電子機票 (截圖/列印)" },
+                { type: "check", title: "eSIM / 網卡 (已設定?)" },
+                { type: "check", title: "行動電源 (不可託運)" },
+                { type: "check", title: "充電線 (Type-C / Lightning)" },
+                { type: "check", title: "錢包 (韓元 / 信用卡 / 日幣)" },
+                { type: "check", title: "AirTag (掛行李箱)" },
+                { type: "check", title: "轉接頭 (兩孔圓形)" },
+                { type: "check", title: "牙刷牙膏 (飯店不提供)" },
+                { type: "check", title: "個人藥品 (胃藥/止痛藥)" },
+                { type: "check", title: "輕便雨傘 / 雨衣" },
+                { type: "check", title: "釜山 Pass QR Code" }
+            ],
+            "4/7": [
+                {
+                    time: "14:40",
+                    title: "✈️ 長榮 BR164 起飛",
+                    sub: "桃園機場第二航廈",
+                    img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800", /* 飛機 */
+                    traffic: "自行前往桃園機場。\nBR164 14:40 起飛。",
+                    tips: "1. 提早2.5小時到機場。\n2. 行動電源隨身帶。"
+                },
+                {
+                    time: "18:00",
+                    title: "🛬 抵達金海機場",
+                    sub: "入境 & 領行李",
+                    img: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=800", /* 機場/行李 */
+                    traffic: "跟著人群走 -> 入境審查 -> 領行李。",
+                    tips: "入境後記得先去換錢或確認 WOWPASS。"
+                },
+                {
+                    time: "19:00",
+                    title: "🚇 機場 -> 西面飯店",
+                    sub: "輕軌 + 地鐵",
+                    img: "https://images.unsplash.com/photo-1549646875-0d2b7d41f71a?q=80&w=800", /* 地鐵 */
+                    traffic: "1. 輕軌(紫線) 至「沙上站」。\n2. 轉地鐵2號線(綠線) 至「西面站」。\n3. 7號出口 (找電梯)。",
+                    tips: "Denbasta Hotel Central Check-in。"
+                },
+                {
+                    time: "20:30",
+                    title: "🍱 晚餐：西面市場",
+                    sub: "在地美食",
+                    img: "https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?q=80&w=800", /* 韓國市場食物 */
+                    traffic: "飯店步行即可。",
+                    tips: "推薦：刀切麵、豬肉湯飯。"
+                },
+                {
+                    time: "22:00",
+                    title: "🍗 宵夜：橋村炸雞",
+                    sub: "飯店代訂",
+                    img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800", /* 炸雞 */
+                    traffic: "請櫃檯幫忙叫外送。",
+                    tips: "推薦：蜂蜜口味 (Honey Original)。"
+                }
+            ],
+            "4/8": [
+                {
+                    time: "09:00",
+                    title: "🏨 移動到海雲台",
+                    sub: "地鐵直達",
+                    img: "https://images.unsplash.com/photo-1569970034604-0c58a5287f32?q=80&w=800", /* 韓國街道 */
+                    traffic: "西面站 -> 海雲台站 (免轉車)。\n3號出口走7分鐘。",
+                    tips: "先去飯店寄放行李。"
+                },
+                {
+                    time: "11:00",
+                    title: "🍱 午餐：尾浦家",
+                    sub: "海鮮醃漬定食",
+                    img: "https://images.unsplash.com/photo-1559314809-0d155014e29e?q=80&w=800", /* 海鮮 */
+                    traffic: "中洞站步行或計程車。",
+                    tips: "這家超紅，建議提早去排隊。"
+                },
+                {
+                    time: "15:00",
+                    title: "🚋 天空膠囊列車",
+                    sub: "尾浦 -> 清沙浦",
+                    img: "https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?q=80&w=800", /* 列車相關 */
+                    traffic: "尾浦站上車。\n時間：15:00 - 16:00 (絕對不能遲到)。",
+                    tips: "手機電量充滿，這段路超美！"
+                },
+                {
+                    time: "16:30",
+                    title: "🌊 清沙浦天空步道",
+                    sub: "透明地板",
+                    img: "https://images.unsplash.com/photo-1495954484750-af469f2f9be5?q=80&w=800", /* 海邊步道 */
+                    traffic: "下車後步行。",
+                    tips: "回程搭海岸列車 (Beach Train) 回尾浦。"
+                },
+                {
+                    time: "20:00",
+                    title: "🛍️ 海雲台大創 & 夜市",
+                    sub: "逛街行程",
+                    img: "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=800", /* 夜市 */
+                    traffic: "海雲台站前。",
+                    tips: "宵夜：海鮮蔥餅。"
+                }
+            ],
+            "4/9": [
+                {
+                    time: "09:00",
+                    title: "🍱 早餐：大海鮑魚粥",
+                    sub: "必吃粥品",
+                    img: "https://images.unsplash.com/photo-1563865436874-9aef32095fad?q=80&w=800", /* 粥/湯 */
+                    traffic: "海雲台區。",
+                    tips: "吃完去逛一下三津魚餅。"
+                },
+                {
+                    time: "10:30",
+                    title: "🌸 影島東三海水川",
+                    sub: "賞櫻秘境",
+                    img: "https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=800", /* 櫻花 */
+                    traffic: "建議從南浦洞轉公車。",
+                    tips: "這裡櫻花超多，準備好相機！"
+                },
+                {
+                    time: "12:30",
+                    title: "🍱 午餐：影島海女村",
+                    sub: "海邊海鮮",
+                    img: "https://images.unsplash.com/photo-1544551763-46a8723ba3f9?q=80&w=800", /* 海邊/海鮮 */
+                    traffic: "影島海邊。",
+                    tips: "坐在海邊吃海膽紫菜包飯。"
+                },
+                {
+                    time: "15:00",
+                    title: "🏘️ 白淺灘文化村",
+                    sub: "網美咖啡廳",
+                    img: "https://images.unsplash.com/photo-1512453979798-5ea904f8486d?q=80&w=800", /* 希臘風/白牆 */
+                    traffic: "公車前往。",
+                    tips: "去 THRILL ON THE MUG 喝咖啡。"
+                }
+            ],
+            "4/10": [
+                 {
+                    time: "09:00",
+                    title: "🚠 松島海上纜車",
+                    sub: "水晶車廂",
+                    img: "https://images.unsplash.com/photo-1595246140625-573b715d11dc?q=80&w=800", /* 纜車 */
+                    traffic: "南浦洞搭公車或計程車。",
+                    tips: "記得走龍宮空中步道。"
+                },
+                {
+                    time: "15:00",
+                    title: "🎁 樂天超市 (光復店)",
+                    sub: "伴手禮採購",
+                    img: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?q=80&w=800", /* 超市/購物 */
+                    traffic: "南浦站直結。",
+                    tips: "準備大袋子，這裡超好買！"
+                },
+                {
+                    time: "20:00",
+                    title: "✨ 廣安里無人機秀",
+                    sub: "MONE SHOW",
+                    img: "https://images.unsplash.com/photo-1469122312224-c5846569af22?q=80&w=800", /* 夜景/燈光 */
+                    traffic: "廣安里海水浴場。",
+                    tips: "買 All Sunday 貝果邊吃邊看。"
+                }
+            ],
+            "4/11": [
+                 {
+                    time: "09:00",
+                    title: "🏘️ 甘川洞文化村",
+                    sub: "小王子",
+                    img: "https://images.unsplash.com/photo-1596414086775-3e32157b6f32?q=80&w=800", /* 甘川洞彩色屋 */
+                    traffic: "土城站轉計程車。",
+                    tips: "一定要跟小王子背影合照。"
+                },
+                {
+                    time: "12:00",
+                    title: "🦀 午餐：札嘎其市場",
+                    sub: "帝王蟹",
+                    img: "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?q=80&w=800", /* 螃蟹 */
+                    traffic: "札嘎其站。",
+                    tips: "記得殺價！"
+                },
+                {
+                    time: "16:30",
+                    title: "✈️ 前往機場 (BR163)",
+                    sub: "回家囉",
+                    img: "https://images.unsplash.com/photo-1520697926715-e2f47c87023d?q=80&w=800", /* 機場/飛機 */
+                    traffic: "回飯店拿行李 -> 機場。",
+                    tips: "BR163 19:19 起飛。"
+                }
+            ]
+        };
+
+        const tabContainer = document.getElementById('tabContainer');
+        const listContainer = document.getElementById('listContainer');
+        const modal = document.getElementById('detailModal');
+
+        function init() {
+            const tabs = Object.keys(appData);
+            
+            tabs.forEach((tabName, index) => {
+                // 1. 建立 Tab 按鈕
+                const btn = document.createElement('button');
+                btn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
+                btn.innerText = tabName;
+                btn.onclick = () => switchTab(tabName, btn);
+                tabContainer.appendChild(btn);
+
+                // 2. 建立內容容器
+                const listDiv = document.createElement('div');
+                listDiv.className = `day-list ${index === 0 ? 'active' : ''}`;
+                listDiv.id = `list-${tabName}`;
+                
+                // 3. 判斷是「行程」還是「清單」
+                const items = appData[tabName];
+                
+                items.forEach(item => {
+                    if (item.type === 'check') {
+                        // 渲染成檢查清單 (Checkbox)
+                        const checkBox = document.createElement('div');
+                        checkBox.className = 'check-item';
+                        checkBox.onclick = function() {
+                            this.classList.toggle('checked');
+                        };
+                        checkBox.innerHTML = `
+                            <div class="check-box"></div>
+                            <div class="check-text">${item.title}</div>
+                        `;
+                        listDiv.appendChild(checkBox);
+                    } else {
+                        // 渲染成行程卡片 (Card)
+                        const card = document.createElement('div');
+                        card.className = 'trip-card';
+                        card.onclick = () => openModal(item);
+                        card.innerHTML = `
+                            <div class="card-time">${item.time}</div>
+                            <div class="card-info">
+                                <div class="card-title">${item.title}</div>
+                                <div class="card-sub">${item.sub}</div>
+                            </div>
+                            <div class="card-arrow">➜</div>
+                        `;
+                        listDiv.appendChild(card);
+                    }
+                });
+
+                listContainer.appendChild(listDiv);
+            });
+        }
+
+        function switchTab(tabName, btnElement) {
+            document.querySelectorAll('.day-list').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(`list-${tabName}`).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        function openModal(item) {
+            document.getElementById('m-img').src = item.img;
+            document.getElementById('m-title').innerText = item.title;
+            document.getElementById('m-traffic').innerText = item.traffic;
+            document.getElementById('m-tips').innerText = item.tips;
+            
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.classList.add('open'); }, 10);
+        }
+
+        function closeDetail(event) {
+            if (event.target === modal) closeDetailForce();
+        }
+
+        function closeDetailForce() {
+            modal.classList.remove('open');
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+        }
+
+        init();
+    </script>
+</body>
+</html>
