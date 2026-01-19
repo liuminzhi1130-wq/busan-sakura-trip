@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kuromi Busan Trip V2 🌸</title>
+    <style>
+        /* --- VIBE SETTING: 庫洛米暗黑櫻花風 --- */
+        :root {
+            --bg-color: #12001b; /* 背景深紫黑 */
+            --card-bg: #1e002e; /* 卡片背景 */
+            --primary-pink: #ff57b9; /* 霓虹粉 */
+            --kuromi-purple: #b655ff; /* 庫洛米紫 */
+            --text-color: #ffffff;
+            --modal-bg: #2d0042; /* 彈窗背景 */
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100%;
+            overflow: hidden; /* 防止背景滾動 */
+        }
+
+        /* 🌸 背景特效 */
+        .sakura-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -1;
+            background-image: url('https://i.imgur.com/8G6Y0aF.png'); /* 櫻花素材 */
+            background-size: 300px; opacity: 0.3;
+            animation: sakuraFall 25s linear infinite;
+        }
+        @keyframes sakuraFall { from { background-position: 0 0; } to { background-position: 100px 1000px; } }
+
+        /* --- 主容器 --- */
+        .app-container {
+            max-width: 500px; margin: 0 auto; height: 100vh;
+            display: flex; flex-direction: column;
+            background: rgba(20, 0, 30, 0.9);
+            border-left: 1px solid #ffffff20; border-right: 1px solid #ffffff20;
+        }
+
+        /* --- Header --- */
+        .header {
+            padding: 15px; text-align: center;
+            background: linear-gradient(180deg, #2a003b 0%, var(--bg-color) 100%);
+            border-bottom: 2px solid var(--primary-pink);
+            flex-shrink: 0;
+        }
+        .header h1 { margin: 0; font-size: 22px; color: var(--primary-pink); text-shadow: 0 0 8px var(--primary-pink); }
+        .header p { margin: 5px 0 0; font-size: 12px; color: var(--kuromi-purple); opacity: 0.8; }
+
+        /* --- 日期選單 (Tabs) --- */
+        .tabs {
+            display: flex; overflow-x: auto; padding: 10px 5px;
+            background: #150020; scrollbar-width: none; flex-shrink: 0;
+        }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab-btn {
+            background: none; border: 1px solid var(--kuromi-purple);
+            color: var(--kuromi-purple); padding: 8px 16px; margin: 0 6px;
+            border-radius: 20px; white-space: nowrap; font-size: 14px;
+            transition: 0.3s;
+        }
+        .tab-btn.active {
+            background: var(--primary-pink); color: #000;
+            border-color: var(--primary-pink); font-weight: bold;
+            box-shadow: 0 0 12px var(--primary-pink);
+        }
+
+        /* --- 列表區域 --- */
+        .content-area { flex: 1; overflow-y: auto; padding: 15px; position: relative; }
+        
+        .day-list { display: none; animation: fadeIn 0.4s; }
+        .day-list.active { display: block; }
+
+        /* --- 行程卡片 --- */
+        .trip-card {
+            display: flex; align-items: center;
+            background: var(--card-bg);
+            margin-bottom: 12px; padding: 12px;
+            border-radius: 12px; border: 1px solid #ffffff10;
+            cursor: pointer; transition: 0.2s;
+        }
+        .trip-card:active { transform: scale(0.98); background: #3a0050; }
+        
+        .card-time {
+            font-size: 14px; font-weight: bold; color: var(--primary-pink);
+            width: 50px; flex-shrink: 0;
+        }
+        .card-info { flex: 1; padding-left: 10px; }
+        .card-title { font-size: 16px; margin-bottom: 4px; }
+        .card-sub { font-size: 12px; color: #aaa; }
+        .card-arrow { color: var(--kuromi-purple); font-size: 18px; }
+
+        /* --- 彈跳視窗 (Modal) 詳細頁 --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8); z-index: 999;
+            display: none; justify-content: center; align-items: flex-end;
+        }
+        .modal-overlay.open { display: flex; animation: slideUp 0.3s forwards; }
+
+        .modal-content {
+            background: var(--modal-bg); width: 100%; max-width: 500px;
+            height: 85vh; /* 佔據螢幕 85% 高度 */
+            border-radius: 20px 20px 0 0;
+            padding: 20px; box-sizing: border-box;
+            overflow-y: auto; position: relative;
+            box-shadow: 0 -5px 20px rgba(182, 85, 255, 0.3);
+        }
+
+        /* 詳細頁內容設計 */
+        .detail-img {
+            width: 100%; height: 200px; object-fit: cover;
+            border-radius: 15px; margin-bottom: 20px;
+            background-color: #000; border: 2px solid var(--kuromi-purple);
+        }
+        .detail-title { font-size: 24px; color: var(--primary-pink); margin-bottom: 10px; font-weight: bold; }
+        .detail-section { margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; }
+        .section-header { display: flex; align-items: center; color: var(--kuromi-purple); margin-bottom: 8px; font-weight: bold; }
+        .section-icon { margin-right: 8px; font-size: 18px; }
+        .detail-text { font-size: 15px; line-height: 1.6; color: #ddd; white-space: pre-line; }
+
+        .close-btn {
+            position: absolute; top: 15px; right: 15px;
+            background: rgba(0,0,0,0.5); color: #fff;
+            width: 35px; height: 35px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 20px; cursor: pointer; border: 1px solid #fff;
+        }
+
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="sakura-bg"></div>
+
+    <div class="app-container">
+        <header class="header">
+            <h1>釜山櫻花大作戰 V2</h1>
+            <p>點擊行程查看詳情 💀🌸</p>
+        </header>
+
+        <nav class="tabs" id="tabContainer">
+            </nav>
+
+        <main class="content-area" id="listContainer">
+            </main>
+    </div>
+
+    <div class="modal-overlay" id="detailModal" onclick="closeDetail(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="close-btn" onclick="closeDetailForce()">✕</div>
+            
+            <img id="m-img" src="" class="detail-img" alt="景點照片">
+            <div id="m-title" class="detail-title">標題</div>
+
+            <div class="detail-section">
+                <div class="section-header"><span class="section-icon">🚇</span>交通方式</div>
+                <div id="m-traffic" class="detail-text"></div>
+            </div>
+
+            <div class="detail-section">
+                <div class="section-header"><span class="section-icon">💡</span>Kuromi 提醒</div>
+                <div id="m-tips" class="detail-text"></div>
+            </div>
+            
+            <div style="height: 50px;"></div> </div>
+    </div>
+
+    <script>
+        // 🌸🌸🌸 這裡是可以修改的資料庫 🌸🌸🌸
+        // img: 可以換成你自己的照片網址 (Imgur 或 Google Drive 直鏈)
+        // traffic: 交通方式
+        // tips: 注意事項
+        const itineraryData = {
+            "4/7": [
+                {
+                    time: "14:40",
+                    title: "✈️ 長榮 BR164 起飛",
+                    sub: "桃園機場第二航廈",
+                    img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800",
+                    traffic: "自行前往桃園機場第二航廈。\nBR164 14:40 起飛。",
+                    tips: "1. 護照檢查了嗎？\n2. 行動電源不能託運喔！\n3. 準備好飛行模式的離線劇集了嗎？"
+                },
+                {
+                    time: "18:00",
+                    title: "🛬 抵達金海機場",
+                    sub: "入境 & 領行李",
+                    img: "https://images.unsplash.com/photo-1570183569726-25985a210543?q=80&w=800",
+                    traffic: "跟著人群走，入境審查 -> 領行李 -> 出關。",
+                    tips: "入境後記得先去換錢或確認 WOWPASS 餘額。"
+                },
+                {
+                    time: "19:00",
+                    title: "🚇 機場大移動 -> 西面",
+                    sub: "輕軌 + 地鐵",
+                    img: "https://images.unsplash.com/photo-1549646875-0d2b7d41f71a?q=80&w=800",
+                    traffic: "1. 搭乘「釜山-金海輕軌 (紫線)」至「沙上站 (Sasang)」。\n2. 轉乘「地鐵2號線 (綠線)」至「西面站 (Seomyeon)」。\n3. 走「7號出口」出站 (有手扶梯嗎? 要確認一下)。",
+                    tips: "轉乘時路程約需走 5-8 分鐘，行李拖好！"
+                },
+                {
+                    time: "20:30",
+                    title: "🍱 晚餐：西面市場",
+                    sub: "在地美食探險",
+                    img: "https://images.unsplash.com/photo-1580651315530-69c8e0026377?q=80&w=800",
+                    traffic: "飯店步行即可抵達。",
+                    tips: "看到刀切麵、紫菜包飯、辣炒年糕都可以試試看！"
+                },
+                {
+                    time: "22:00",
+                    title: "🍗 宵夜：橋村炸雞",
+                    sub: "飯店代訂",
+                    img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800",
+                    traffic: "請飯店櫃檯幫忙叫外送，或是走到附近分店買。",
+                    tips: "推薦：蜂蜜口味 (Honey Original)。\n配可樂或啤酒是必須的！"
+                }
+            ],
+            "4/8": [
+                {
+                    time: "09:00",
+                    title: "🏨 移動到海雲台",
+                    sub: "地鐵直達",
+                    img: "https://images.unsplash.com/photo-1627995874477-805cb33fa0f1?q=80&w=800",
+                    traffic: "西面站 (2號線) -> 海雲台站 (下車)。\n從3號出口步行7分鐘到飯店放行李。",
+                    tips: "不用轉車，大概坐30-40分鐘，可以在車上補眠。"
+                },
+                {
+                    time: "11:00",
+                    title: "🍱 午餐：尾浦家",
+                    sub: "美到哭的海鮮醬",
+                    img: "https://images.unsplash.com/photo-1559314809-0d155014e29e?q=80&w=800",
+                    traffic: "地鐵中洞站 (Jung-dong) 附近。\n地址：釜山海雲台區達磨路62番街3",
+                    tips: "這家很有名，可能要排隊，建議提早一點到。"
+                },
+                {
+                    time: "15:00",
+                    title: "🚋 天空膠囊列車",
+                    sub: "尾浦 -> 清沙浦",
+                    img: "https://images.unsplash.com/photo-1635238206155-7033580579e0?q=80&w=800",
+                    traffic: "從尾浦站 (Mipo Station) 出發。\n預約時間：15:00 - 16:00。",
+                    tips: "千萬不要遲到！這是預約制的。\n手機準備好，這段路超級好拍。"
+                },
+                {
+                    time: "16:30",
+                    title: "🌊 清沙浦天空步道",
+                    sub: "透明地板",
+                    img: "https://images.unsplash.com/photo-1517409419-5868a2ee397e?q=80&w=800",
+                    traffic: "膠囊列車下車後步行即可到達。",
+                    tips: "回程搭「海岸列車 (Beach Train)」回尾浦，不用預約，現場購票或用 Pass。"
+                },
+                 {
+                    time: "20:00",
+                    title: "🛍️ 海雲台大創 & 夜市",
+                    sub: "6層樓大創 + 傳統市場",
+                    img: "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=800",
+                    traffic: "海雲台站附近，步行可達。",
+                    tips: "大創有電梯，建議從最高樓逛下來。\n宵夜推薦：海鮮蔥餅 or 60雞。"
+                }
+            ],
+            "4/9": [
+                {
+                    time: "09:00",
+                    title: "🍱 早餐：大海鮑魚粥",
+                    sub: "暖胃首選",
+                    img: "https://images.unsplash.com/photo-1601625463687-25541fb72060?q=80&w=800",
+                    traffic: "海雲台區，地圖導航前往。",
+                    tips: "吃完去附近的「三津魚餅本店」體驗一下魚餅歷史。"
+                },
+                {
+                    time: "10:30",
+                    title: "🌸 影島東三海水川",
+                    sub: "絕美櫻花路",
+                    img: "https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=800",
+                    traffic: "建議從南浦洞轉公車前往影島。",
+                    tips: "這裡是賞櫻秘境，穿粉色或白色的衣服拍照會很仙喔！"
+                },
+                {
+                    time: "12:30",
+                    title: "🍱 午餐：影島海女村",
+                    sub: "海邊吃海鮮",
+                    img: "https://images.unsplash.com/photo-1553603227-2358a3a6d2b6?q=80&w=800",
+                    traffic: "影島區中里南路 2-35。",
+                    tips: "直接坐在海邊吃，很有韓劇感！(但風可能有點大)"
+                },
+                {
+                    time: "15:00",
+                    title: "🏘️ 白淺灘文化村",
+                    sub: "韓國聖托里尼",
+                    img: "https://images.unsplash.com/photo-1523978591478-c753949ff840?q=80&w=800",
+                    traffic: "公車移動到白淺灘。",
+                    tips: "推薦去咖啡廳：THRILL ON THE MUG 看海景休息。"
+                }
+            ],
+            "4/10": [
+                 {
+                    time: "09:00",
+                    title: "🚠 松島海上纜車",
+                    sub: "水晶車廂",
+                    img: "https://images.unsplash.com/photo-1502475470123-2868c2d5d836?q=80&w=800",
+                    traffic: "從南浦洞搭公車或計程車前往松島。",
+                    tips: "敢挑戰水晶車廂嗎？腳下是透明的喔！\n記得走龍宮空中步道。"
+                },
+                {
+                    time: "15:00",
+                    title: "🎁 樂天超市 (光復店)",
+                    sub: "爆買伴手禮",
+                    img: "https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?q=80&w=800",
+                    traffic: "地鐵南浦站直結。",
+                    tips: "準備好大購物袋！這時候可以把零食、泡麵一次買齊。"
+                },
+                {
+                    time: "20:00",
+                    title: "✨ 廣安里無人機秀",
+                    sub: "MONE SHOW",
+                    img: "https://images.unsplash.com/photo-1532160172607-4a7b4502d917?q=80&w=800",
+                    traffic: "自行搭車前往廣安里海水浴場。",
+                    tips: "買好 올선데이 (All Sunday) 的貝果，邊吃邊看秀。"
+                }
+            ],
+            "4/11": [
+                 {
+                    time: "09:00",
+                    title: "🏘️ 甘川洞文化村",
+                    sub: "小王子與狐狸",
+                    img: "https://images.unsplash.com/photo-1535139262971-c51845709a48?q=80&w=800",
+                    traffic: "地鐵土城站 -> 轉計程車 (約4800韓元)。",
+                    tips: "這裡也是山路，穿好走的鞋子！\n去「希望階梯」許願。"
+                },
+                {
+                    time: "12:00",
+                    title: "🦀 午餐：札嘎其市場",
+                    sub: "帝王蟹大餐",
+                    img: "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?q=80&w=800",
+                    traffic: "地鐵札嘎其站。",
+                    tips: "最後一餐犒賞自己，記得貨比三家不吃虧。"
+                },
+                {
+                    time: "16:30",
+                    title: "✈️ 前往機場 (BR163)",
+                    sub: "回家囉",
+                    img: "https://images.unsplash.com/photo-1520697926715-e2f47c87023d?q=80&w=800",
+                    traffic: "回飯店拿行李 -> 地鐵+輕軌 -> 金海機場。",
+                    tips: "BR163 19:19 起飛，建議 17:00 前抵達機場退稅、逛免稅店。"
+                }
+            ]
+        };
+
+        // --- 程式邏輯開始 ---
+
+        const tabContainer = document.getElementById('tabContainer');
+        const listContainer = document.getElementById('listContainer');
+        const modal = document.getElementById('detailModal');
+
+        // 初始化
+        function init() {
+            const dates = Object.keys(itineraryData);
+            
+            dates.forEach((date, index) => {
+                // 建立 Tab
+                const btn = document.createElement('button');
+                btn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
+                btn.innerText = date;
+                btn.onclick = () => switchTab(date, btn);
+                tabContainer.appendChild(btn);
+
+                // 建立列表容器
+                const listDiv = document.createElement('div');
+                listDiv.className = `day-list ${index === 0 ? 'active' : ''}`;
+                listDiv.id = `list-${date}`;
+                
+                // 建立該日期的所有行程卡片
+                itineraryData[date].forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'trip-card';
+                    card.onclick = () => openModal(item);
+                    card.innerHTML = `
+                        <div class="card-time">${item.time}</div>
+                        <div class="card-info">
+                            <div class="card-title">${item.title}</div>
+                            <div class="card-sub">${item.sub}</div>
+                        </div>
+                        <div class="card-arrow">➜</div>
+                    `;
+                    listDiv.appendChild(card);
+                });
+
+                listContainer.appendChild(listDiv);
+            });
+        }
+
+        // 切換日期
+        function switchTab(date, btnElement) {
+            // 隱藏所有列表
+            document.querySelectorAll('.day-list').forEach(el => el.classList.remove('active'));
+            // 取消所有按鈕激活
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            // 顯示選中
+            document.getElementById(`list-${date}`).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // 開啟詳細頁
+        function openModal(item) {
+            document.getElementById('m-img').src = item.img;
+            document.getElementById('m-title').innerText = item.title;
+            document.getElementById('m-traffic').innerText = item.traffic;
+            document.getElementById('m-tips').innerText = item.tips;
+            
+            modal.style.display = 'flex'; // 先 display flex 才能做動畫
+            // 稍微延遲加上 class 以觸發 CSS 動畫
+            setTimeout(() => {
+                modal.classList.add('open');
+            }, 10);
+        }
+
+        // 關閉詳細頁
+        function closeDetail(event) {
+            // 只有點擊背景遮罩才關閉
+            if (event.target === modal) {
+                closeDetailForce();
+            }
+        }
+
+        function closeDetailForce() {
+            modal.classList.remove('open');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300); // 等動畫跑完再隱藏
+        }
+
+        // 啟動 App
+        init();
+
+    </script>
+</body>
+</html>
