@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Kuromi & Hello Kitty Busan Trip 🌸</title>
     <style>
-        /* --- V3.9 THEME: Hello Kitty 櫻花粉嫩風格 (修復右下角圖示) --- */
+        /* --- V4.0 THEME: Hello Kitty 櫻花粉嫩風格 (終極自訂圖示版) --- */
         :root {
             --bg-color: #fff0f5;
             --card-bg: #ffffff;
@@ -39,25 +39,31 @@
             opacity: 0.5;
         }
 
-        /* ▼▼▼ 右下角貼紙修改區 (V3.9) ▼▼▼ */
+        /* ▼▼▼ 右下角貼紙修改區 (V4.0) ▼▼▼ */
         .kuromi-sticker {
             position: fixed;
-            bottom: 10px;
-            right: 10px;
-            width: 100px;  /* 恢復為 100px */
-            height: 100px; /* 恢復為 100px */
+            bottom: 15px;
+            right: 15px;
+            width: 100px;  /* 維持 100px 大小 */
+            height: 100px;
             z-index: 10;
-            pointer-events: none; /* 不擋操作 */
-            /* 換成更像 Hello Kitty 的細線條輪廓圖 */
-            background-image: url('https://cdn-icons-png.flaticon.com/512/5969/5969346.png'); 
-            background-size: contain; background-repeat: no-repeat;
+            pointer-events: none; /* 點擊穿透，不擋操作 */
             
-            /* 關鍵調整： */
-            opacity: 0.4; /* 極低透明度，讓線條看起來更細、不搶戲 */
-            /* 濾鏡：將黑色線條轉為主題粉紅色 */
-            filter: invert(62%) sepia(93%) saturate(3244%) hue-rotate(300deg) brightness(103%) contrast(101%);
+            /* 讀取你上傳的 icon_kitty.png */
+            background-image: url('icon_kitty.png'); 
+            
+            background-size: contain; 
+            background-repeat: no-repeat;
+            background-position: bottom right;
+            
+            /* 透明度設定 0.6，讓它有點半透明浮水印的感覺 */
+            /* 如果你想要它很清楚，可以改成 1.0 */
+            opacity: 0.6; 
+            
+            /* 拿掉濾鏡，直接顯示你圖片原本的顏色 */
+            /* 如果你上傳的是全黑線稿想變粉紅，請告訴我，我再把濾鏡加回來 */
         }
-        /* ▲▲▲ 右下角貼紙修改區 (V3.9) ▲▲▲ */
+        /* ▲▲▲ 右下角貼紙修改區 (V4.0) ▲▲▲ */
 
         .app-container {
             max-width: 600px; margin: 0 auto; height: 100vh;
@@ -188,7 +194,7 @@
 
     <div class="app-container">
         <header class="header">
-            <h1>釜山櫻花行 V3.9</h1>
+            <h1>釜山櫻花行 V4.0</h1>
             <p>🌸 Hello Kitty & Friends Trip 🌸</p>
         </header>
 
@@ -466,7 +472,6 @@
                     }
                 });
 
-                // 插入底部插畫
                 if (footerImages[tabName]) {
                     const footerImg = document.createElement('img');
                     footerImg.src = footerImages[tabName];
